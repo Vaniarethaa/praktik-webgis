@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 980px;
+            height: 522px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/JaringanJalanSukomanunggal_0.js"></script>
+        <script src="data/Penggunaan_Lahan_Sukomanunggal_1.js"></script>
+        <script src="data/FasilitasKesehatanSukomanunggal_2.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        function pop_JaringanJalanSukomanunggal_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Jaringan Jalan</strong><br />' + (feature.properties['NAMAOBJ'] !== null ? autolinker.link(feature.properties['NAMAOBJ'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_JaringanJalanSukomanunggal_0_0(feature) {
+            switch(String(feature.properties['NAMAOBJ'])) {
+                case 'Jalan Arteri Sekunder':
+                    return {
+                pane: 'pane_JaringanJalanSukomanunggal_0',
+                opacity: 1,
+                color: 'rgba(135,132,233,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jalan Kolektor Sekunder':
+                    return {
+                pane: 'pane_JaringanJalanSukomanunggal_0',
+                opacity: 1,
+                color: 'rgba(205,124,212,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jalan Lingkungan':
+                    return {
+                pane: 'pane_JaringanJalanSukomanunggal_0',
+                opacity: 1,
+                color: 'rgba(126,229,160,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jalan Lokal Sekunder':
+                    return {
+                pane: 'pane_JaringanJalanSukomanunggal_0',
+                opacity: 1,
+                color: 'rgba(217,104,130,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jalan Tol':
+                    return {
+                pane: 'pane_JaringanJalanSukomanunggal_0',
+                opacity: 1,
+                color: 'rgba(216,160,71,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jaringan Kereta Api (KA) Antarkota':
+                    return {
+                pane: 'pane_JaringanJalanSukomanunggal_0',
+                opacity: 1,
+                color: 'rgba(145,221,59,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_JaringanJalanSukomanunggal_0',
+                opacity: 1,
+                color: 'rgba(66,204,235,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_JaringanJalanSukomanunggal_0');
+        map.getPane('pane_JaringanJalanSukomanunggal_0').style.zIndex = 400;
+        map.getPane('pane_JaringanJalanSukomanunggal_0').style['mix-blend-mode'] = 'normal';
+        var layer_JaringanJalanSukomanunggal_0 = new L.geoJson(json_JaringanJalanSukomanunggal_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_JaringanJalanSukomanunggal_0',
+            layerName: 'layer_JaringanJalanSukomanunggal_0',
+            pane: 'pane_JaringanJalanSukomanunggal_0',
+            onEachFeature: pop_JaringanJalanSukomanunggal_0,
+            style: style_JaringanJalanSukomanunggal_0_0,
+        });
+        bounds_group.addLayer(layer_JaringanJalanSukomanunggal_0);
+        map.addLayer(layer_JaringanJalanSukomanunggal_0);
+        function pop_Penggunaan_Lahan_Sukomanunggal_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Penggunaan Lahan</strong><br />' + (feature.properties['Hirarki_1'] !== null ? autolinker.link(feature.properties['Hirarki_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Penggunaan_Lahan_Sukomanunggal_1_0(feature) {
+            switch(String(feature.properties['Hirarki_1'])) {
+                case 'Kawasan Lainnya':
+                    return {
+                pane: 'pane_Penggunaan_Lahan_Sukomanunggal_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(79,206,159,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kawasan Permukiman':
+                    return {
+                pane: 'pane_Penggunaan_Lahan_Sukomanunggal_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,140,21,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Penggunaan_Lahan_Sukomanunggal_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,39,235,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Penggunaan_Lahan_Sukomanunggal_1');
+        map.getPane('pane_Penggunaan_Lahan_Sukomanunggal_1').style.zIndex = 401;
+        map.getPane('pane_Penggunaan_Lahan_Sukomanunggal_1').style['mix-blend-mode'] = 'normal';
+        var layer_Penggunaan_Lahan_Sukomanunggal_1 = new L.geoJson(json_Penggunaan_Lahan_Sukomanunggal_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Penggunaan_Lahan_Sukomanunggal_1',
+            layerName: 'layer_Penggunaan_Lahan_Sukomanunggal_1',
+            pane: 'pane_Penggunaan_Lahan_Sukomanunggal_1',
+            onEachFeature: pop_Penggunaan_Lahan_Sukomanunggal_1,
+            style: style_Penggunaan_Lahan_Sukomanunggal_1_0,
+        });
+        bounds_group.addLayer(layer_Penggunaan_Lahan_Sukomanunggal_1);
+        map.addLayer(layer_Penggunaan_Lahan_Sukomanunggal_1);
+        function pop_FasilitasKesehatanSukomanunggal_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Fasilitas Kesehatan</strong><br />' + (feature.properties['KEGIATAN_O'] !== null ? autolinker.link(feature.properties['KEGIATAN_O'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>TOPONIM</strong><br />' + (feature.properties['TOPONIM'] !== null ? autolinker.link(feature.properties['TOPONIM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>RadiusMete</strong><br />' + (feature.properties['RadiusMete'] !== null ? autolinker.link(feature.properties['RadiusMete'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_FasilitasKesehatanSukomanunggal_2_0(feature) {
+            switch(String(feature.properties['KEGIATAN_O'])) {
+                case 'Posyandu':
+                    return {
+                pane: 'pane_FasilitasKesehatanSukomanunggal_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(51,240,152,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Puskesmas':
+                    return {
+                pane: 'pane_FasilitasKesehatanSukomanunggal_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,56,221,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Puskesmas Pembantu':
+                    return {
+                pane: 'pane_FasilitasKesehatanSukomanunggal_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(223,229,40,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_FasilitasKesehatanSukomanunggal_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,119,164,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_FasilitasKesehatanSukomanunggal_2');
+        map.getPane('pane_FasilitasKesehatanSukomanunggal_2').style.zIndex = 402;
+        map.getPane('pane_FasilitasKesehatanSukomanunggal_2').style['mix-blend-mode'] = 'normal';
+        var layer_FasilitasKesehatanSukomanunggal_2 = new L.geoJson(json_FasilitasKesehatanSukomanunggal_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_FasilitasKesehatanSukomanunggal_2',
+            layerName: 'layer_FasilitasKesehatanSukomanunggal_2',
+            pane: 'pane_FasilitasKesehatanSukomanunggal_2',
+            onEachFeature: pop_FasilitasKesehatanSukomanunggal_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_FasilitasKesehatanSukomanunggal_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_FasilitasKesehatanSukomanunggal_2);
+        map.addLayer(layer_FasilitasKesehatanSukomanunggal_2);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        setBounds();
+        </script>
+    </body>
+</html>
